@@ -1,3 +1,32 @@
+# freerouting (manual-assisted fork)
+Fork of [freerouting/freerouting](https://github.com/freerouting/freerouting), fixed for reliable KiCad integration based on hands-on avionics, industrial IoT, and picky PCB work.
+
+## Why this fork exists
+After spending a few years using the web-version of freerouting I grew fond of its features beyond just 'hey, route this board.' So I adapted the KiCad plugin to allow manual or 'online' DRC tool-assisted routing and component placement before pushing changes back into KiCAD. Once you get the hang of this workflow your powers will grow.
+
+## Key changes from upstream
+
+| Change | Why |
+|---|---|
+| Pinned to **v1.4.0** JAR | Later versions were producing DRC errors on complex boards; 1.4.0 is the most reliable |
+| `threading = false` | Multi-threading in upstream causes clearance violation bugs |
+| `route_gnd = true` | Routes GND explicitly rather than relying on pour — cleaner results on avionics boards |
+| `interactive = true` | Requires manual save before exit; prevents data loss on long routing sessions |
+
+## Usage
+
+1. Copy `plugin.ini` and `freerouting-1.4.0.jar` into your KiCad scripting plugins directory
+2. Run from KiCad's PCB editor via the freerouting plugin
+3. Adjust `plugin.ini` flags as needed for your board
+
+## Notes
+
+- Tested on avionics/embedded hardware PCBs with dense mixed-signal layouts
+- If you're seeing clearance violations with newer freerouting versions, try switching to 1.4.0 with threading disabled
+- GND pour is still recommended — `route_gnd = true` forces explicit GND traces before the pour is applied to make sure everything is connected properly before pour
+
+- ---
+
 <p align="center">
 <img src="https://raw.githubusercontent.com/freerouting/freerouting/master/design/social_preview/freerouting_social_preview_1280x960_v2.png" alt="Freerouting" title="Freerouting" align="center">
 </p>
